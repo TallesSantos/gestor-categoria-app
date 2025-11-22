@@ -15,6 +15,7 @@ import {
   View,
 } from "react-native";
 import { PersonalizableSwitch } from "../commons/personalizable-switch";
+import { ToggleView } from "../commons/toggle-view";
 
 type FormProps = {
   setVisble: (value: boolean) => void;
@@ -154,28 +155,33 @@ export function InsertRegistryForm({ visible, setVisble }: FormProps) {
                       }}
                       style={{ borderWidth: 1, padding: 8 }}
                     />
-                    <View>
-                      <TextInput
-                        placeholder={"Link to external url"}
-                        onChangeText={(value) => {
-                          handleEditRegistrationSchema(column, "href", value);
-                        }}
-                      ></TextInput>
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                      >
-                        <Text>É uma coluna boolean?</Text>
-                        <PersonalizableSwitch
-                          execFunction={(e) => {
-                            handleEditRegistrationSchema(
-                              column,
-                              "isActive",
-                              Boolean(e)
-                            );
+
+                    <ToggleView>
+                      <View>
+                        <TextInput
+                          placeholder={"Link to external url"}
+                          onChangeText={(value) => {
+                            handleEditRegistrationSchema(column, "href", value);
                           }}
-                        />
+                        ></TextInput>
+                        <View
+                          style={{ flexDirection: "row", alignItems: "center" }}
+                        >
+                          <Text>
+                            {plataformLanguages.isBooleanColumn[userLanguage]}
+                          </Text>
+                          <PersonalizableSwitch
+                            execFunction={(e) => {
+                              handleEditRegistrationSchema(
+                                column,
+                                "isActive",
+                                Boolean(e)
+                              );
+                            }}
+                          />
+                        </View>
                       </View>
-                    </View>
+                    </ToggleView>
                   </View>
                 </View>
               )}

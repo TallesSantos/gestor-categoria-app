@@ -75,8 +75,8 @@ export function ConfigModalForm({ visible, setVisble, setRefresh }: FormProps) {
             <Text style={{ color: "red" }}>{errorMessage}</Text>
           ) : null}
 
-          <Text>
-            {plataformLanguages.MinHeigth[userLanguage]}
+          <View style={{ display: "flex" }}>
+            <Text>{plataformLanguages.MinHeigth[userLanguage]}</Text>
 
             <TextInput
               placeholder="ex: 60"
@@ -88,11 +88,10 @@ export function ConfigModalForm({ visible, setVisble, setRefresh }: FormProps) {
               }}
               style={{ borderWidth: 1, padding: 8 }}
             />
-          </Text>
+          </View>
 
-          <Text>
-            {" "}
-            {plataformLanguages.width[userLanguage]}:
+          <View style={{ display: "flex" }}>
+            <Text>{plataformLanguages.width[userLanguage]}:</Text>
             <TextInput
               placeholder="ex: 60"
               value={preferences?.column_min_width.toString() || ""}
@@ -103,11 +102,10 @@ export function ConfigModalForm({ visible, setVisble, setRefresh }: FormProps) {
               }}
               style={{ borderWidth: 1, padding: 8 }}
             />
-          </Text>
+          </View>
 
-          <Text>
-            {" "}
-            {plataformLanguages.primaryColorHeader[userLanguage]}:
+          <View style={{ display: "flex" }}>
+            <Text>{plataformLanguages.primaryColorHeader[userLanguage]}:</Text>
             <TextInput
               placeholder="ex: #FFF"
               value={preferences?.primary_color_header.toString() || ""}
@@ -118,11 +116,12 @@ export function ConfigModalForm({ visible, setVisble, setRefresh }: FormProps) {
               }}
               style={{ borderWidth: 1, padding: 8 }}
             />
-          </Text>
+          </View>
 
-          <Text>
-            {" "}
-            {plataformLanguages.secondaryColorHeader[userLanguage]}:
+          <View style={{ display: "flex" }}>
+            <Text>
+              {plataformLanguages.secondaryColorHeader[userLanguage]}:
+            </Text>
             <TextInput
               placeholder="ex: #CCC"
               value={preferences?.secondary_color_header.toString() || ""}
@@ -133,10 +132,10 @@ export function ConfigModalForm({ visible, setVisble, setRefresh }: FormProps) {
               }}
               style={{ borderWidth: 1, padding: 8 }}
             />
-          </Text>
+          </View>
 
-          <Text>
-            {plataformLanguages.primaryColor[userLanguage]}:
+          <View style={{ display: "flex" }}>
+            <Text>{plataformLanguages.primaryColor[userLanguage]}:</Text>
             <TextInput
               placeholder="ex: #CCC"
               value={preferences?.primary_color.toString() || ""}
@@ -147,7 +146,7 @@ export function ConfigModalForm({ visible, setVisble, setRefresh }: FormProps) {
               }}
               style={{ borderWidth: 1, padding: 8 }}
             />
-          </Text>
+          </View>
 
           <View
             style={{
@@ -156,19 +155,17 @@ export function ConfigModalForm({ visible, setVisble, setRefresh }: FormProps) {
               alignContent: "space-between",
             }}
           >
-            <Text>
-              {plataformLanguages.secondaryColor[userLanguage]}:
-              <TextInput
-                placeholder="ex: #FFF"
-                value={preferences?.secondary_color.toString() || ""}
-                onChangeText={(e) => {
-                  setPreferences((prev) =>
-                    prev ? { ...prev, secondary_color: String(e) } : null
-                  );
-                }}
-                style={{ borderWidth: 1, padding: 8 }}
-              />
-            </Text>
+            <Text>{plataformLanguages.secondaryColor[userLanguage]}:</Text>
+            <TextInput
+              placeholder="ex: #FFF"
+              value={preferences?.secondary_color.toString() || ""}
+              onChangeText={(e) => {
+                setPreferences((prev) =>
+                  prev ? { ...prev, secondary_color: String(e) } : null
+                );
+              }}
+              style={{ borderWidth: 1, padding: 8 }}
+            />
           </View>
 
           <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>

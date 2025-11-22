@@ -64,4 +64,24 @@ export const plataformLanguages = {
     br: "Adicione as informações nas respectivas colunas",
     eng: "Add info about respective column",
   },
+  toggleAdicionalContent: {
+    eng: "Open advanced options",
+    br: "Abrir opções avançadas",
+  },
+  closeToggleView: {
+    eng: "Close advanced options",
+    br: "Fechar opções avançadas",
+  },
+  openToggleView: {
+    eng: "Open advanced options",
+    br: "Abrir opções avançadas",
+  },
+  isBooleanColumn: {
+    eng: "does is a boolean column",
+    br: "É uma coluna boolean?",
+  },
+  dontHasRegistersYet: {
+    eng: "Dont has register yet",
+    br: "Não há registros ainda",
+  },
 };

@@ -193,6 +193,13 @@ export function SectionContent() {
             </View>
 
             <FlatList
+              ListEmptyComponent={
+                <View style={{ alignContent: "center", margin: 10 }}>
+                  <Text>
+                    {plataformLanguages.dontHasRegistersYet[userLanguage]}
+                  </Text>
+                </View>
+              }
               data={content?.items}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
@@ -379,6 +386,7 @@ export function SectionContent() {
             )}
           </>
         )}
+
         {isDeleteRegistryModalVisible && (
           <ConfirmDeleteModal
             onConfirm={() => {

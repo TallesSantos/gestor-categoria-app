@@ -2,6 +2,8 @@ import { useCategoryDb } from "@/db/use-category-database";
 import { useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { useAppVariablesContext } from "../context/app-variables-context";
+import { useUserPreferenceContext } from "../context/user-preference-context";
+import { plataformLanguages } from "../models/user-preference";
 import { DeleteButton } from "./commons/delete-buttom";
 import { ConfirmDeleteModal } from "./commons/delete-modal";
 import { EditButton } from "./commons/edit-button";
@@ -17,12 +19,20 @@ export function SectionMenu() {
   const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null);
   const [isInsertCategoryModalVisible, setIsInsertCategoryModalVisible] =
     useState(false);
+  const { userLanguage } = useUserPreferenceContext();
 
   return (
     <View style={{ width: 120, backgroundColor: "#eee" }}>
       {!isDeleteCategoryModalVisible && !isInsertCategoryModalVisible && (
         <>
           <FlatList
+            ListEmptyComponent={
+              <View style={{ alignContent: "center" }}>
+                <Text>
+                  {plataformLanguages.dontHasRegistersYet[userLanguage]}
+                </Text>
+              </View>
+            }
             data={categories}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
