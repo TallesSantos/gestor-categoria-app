@@ -58,9 +58,9 @@ export function useCategoryDb() {
     try {
       const query = `SELECT 
                       cr.id,
-                      COALESCE(crcj.value_text, 'NULL'),
+                      cr.name,
                       cr.price,
-                      COALESCE(crcj.value_text, 'NULL'),
+                      cr.description,
                       GROUP_CONCAT(
                           printf(
                               '%s|divisor|%s|divisor|%s|divisor|%s',
@@ -135,59 +135,64 @@ export function useCategoryDb() {
     categoryId: number,
     registryRequest: RegistryRequest
   ) {
-    const response = await database.runAsync(
-      "INSERT INTO category_registry(name, price, description, category_id) VALUES (?, ? ,?, ?)",
-      [
-        registryRequest.name,
-        registryRequest.price,
-        registryRequest.description,
-        categoryId,
-      ]
-    );
+    console.log("Db", registryRequest);
+    try {
+      const response = await database.runAsync(
+        "INSERT INTO category_registry(name, price, description, category_id) VALUES (?, ? ,?, ?)",
+        [
+          registryRequest.name,
+          registryRequest.price,
+          registryRequest.description,
+          categoryId,
+        ]
+      );
 
-    const registryId = response.lastInsertRowId;
-    for (let i = 0; i < registryRequest.extra_columns.length; i++) {
-      let templateParamns = "?, ?, ?";
-      if (
-        registryRequest.extra_columns[i].href !== null &&
-        registryRequest.extra_columns[i].href !== undefined
-      ) {
-        templateParamns += ", ?";
+      const registryId = response.lastInsertRowId;
+      for (let i = 0; i < registryRequest.extra_columns.length; i++) {
+        let templateParamns = "?, ?, ?";
+        if (
+          registryRequest.extra_columns[i].href !== null &&
+          registryRequest.extra_columns[i].href !== undefined
+        ) {
+          templateParamns += ", ?";
+        }
+        if (
+          registryRequest.extra_columns[i].isActive !== null &&
+          registryRequest.extra_columns[i].isActive !== undefined &&
+          registryRequest.extra_columns[i].isActive !== false
+        ) {
+          templateParamns += ", ?";
+        }
+
+        const registryColumnId = registryRequest.extra_columns[i].id;
+        const registryColumnValueText =
+          registryRequest.extra_columns[i].value_text;
+
+        const registryHrefValue = registryRequest.extra_columns[i].href;
+        const href = registryHrefValue ? ",href" : "";
+
+        const registryIsActiveValue =
+          registryRequest.extra_columns[i].isActive === true ? 0 : null;
+        const isActive = registryIsActiveValue !== null ? ",isActive" : "";
+
+        const params = [registryColumnValueText, registryColumnId, registryId];
+        if (registryHrefValue) {
+          params.push(registryHrefValue);
+        }
+        if (registryIsActiveValue !== null) {
+          params.push(registryIsActiveValue);
+        }
+
+        const query = `INSERT INTO category_registry_column_junction(value_text, category_column_id,  category_registry_id ${href} ${isActive}) VALUES (${templateParamns})`;
+
+        try {
+          await database.runAsync(query, [...params]);
+        } catch (e) {
+          console.log(e);
+        }
       }
-      if (
-        registryRequest.extra_columns[i].isActive !== null &&
-        registryRequest.extra_columns[i].isActive !== undefined &&
-        registryRequest.extra_columns[i].isActive !== false
-      ) {
-        templateParamns += ", ?";
-      }
-
-      const registryColumnId = registryRequest.extra_columns[i].id;
-      const registryColumnValueText =
-        registryRequest.extra_columns[i].value_text;
-
-      const registryHrefValue = registryRequest.extra_columns[i].href;
-      const href = registryHrefValue ? ",href" : "";
-
-      const registryIsActiveValue =
-        registryRequest.extra_columns[i].isActive === true ? 0 : null;
-      const isActive = registryIsActiveValue !== null ? ",isActive" : "";
-
-      const params = [registryColumnValueText, registryColumnId, registryId];
-      if (registryHrefValue) {
-        params.push(registryHrefValue);
-      }
-      if (registryIsActiveValue !== null) {
-        params.push(registryIsActiveValue);
-      }
-
-      const query = `INSERT INTO category_registry_column_junction(value_text, category_column_id,  category_registry_id ${href} ${isActive}) VALUES (${templateParamns})`;
-
-      try {
-        await database.runAsync(query, [...params]);
-      } catch (e) {
-        console.log(e);
-      }
+    } catch (e) {
+      console.log(e);
     }
   }
 

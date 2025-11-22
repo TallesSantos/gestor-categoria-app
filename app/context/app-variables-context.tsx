@@ -60,7 +60,9 @@ export const AppVariablesProvider = ({ children }: { children: ReactNode }) => {
     if (cats) {
       setCategories(cats);
       if (!selectedId) {
-        setSelectedId(cats[0].id);
+        if (cats[0]) {
+          setSelectedId(cats[0].id);
+        }
       }
     }
   }

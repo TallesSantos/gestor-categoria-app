@@ -24,8 +24,7 @@ type FormProps = {
 
 export function InsertRegistryForm({ visible, setVisble }: FormProps) {
   const { getCategoryByIdWhitchAllColumns, insertRegistry } = useCategoryDb();
-  const { content, setRefresh, setRefreshContent, setSelectedId } =
-    useAppVariablesContext();
+  const { content, setRefresh, setSelectedId } = useAppVariablesContext();
   const [registrySchema, setRegistrySchema] = useState<RegistryRequest | null>(
     null
   );
@@ -56,7 +55,10 @@ export function InsertRegistryForm({ visible, setVisble }: FormProps) {
 
   async function submitForm() {
     setVisble(false);
-    insertRegistry(content?.header.id!, registrySchema!);
+
+    if (registrySchema) {
+      insertRegistry(content?.header.id!, registrySchema);
+    }
 
     setRefresh(Date.now());
     setSelectedId(content?.header.id!);
@@ -107,9 +109,13 @@ export function InsertRegistryForm({ visible, setVisble }: FormProps) {
             <TextInput
               placeholder="Name"
               onChangeText={(e) => {
-                setRegistrySchema((prev) =>
-                  prev ? { ...prev, name: e } : prev
-                );
+                setRegistrySchema((prev) => {
+                  if (prev) {
+                    return { ...prev, name: e };
+                  } else {
+                    return null;
+                  }
+                });
               }}
               style={{ borderWidth: 1, padding: 8 }}
             />
@@ -117,9 +123,13 @@ export function InsertRegistryForm({ visible, setVisble }: FormProps) {
               placeholder="Price"
               textContentType="flightNumber"
               onChangeText={(e) => {
-                setRegistrySchema((prev) =>
-                  prev ? { ...prev, price: Number(e) } : prev
-                );
+                setRegistrySchema((prev) => {
+                  if (prev) {
+                    return { ...prev, price: Number(e) };
+                  } else {
+                    return null;
+                  }
+                });
               }}
               style={{ borderWidth: 1, padding: 8 }}
             />
@@ -127,9 +137,13 @@ export function InsertRegistryForm({ visible, setVisble }: FormProps) {
             <TextInput
               placeholder="Description"
               onChangeText={(e) => {
-                setRegistrySchema((prev) =>
-                  prev ? { ...prev, description: e } : prev
-                );
+                setRegistrySchema((prev) => {
+                  if (prev) {
+                    return { ...prev, description: e };
+                  } else {
+                    return null;
+                  }
+                });
               }}
               style={{ borderWidth: 1, padding: 8 }}
             />

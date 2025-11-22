@@ -202,179 +202,190 @@ export function SectionContent() {
               }
               data={content?.items}
               keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => (
-                <Pressable
-                  key={genRandonKey()}
-                  onPress={() => onSelect(item.id)}
-                >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignContent: "center",
-                      borderBottomWidth: 1,
-                      borderBottomColor: "black",
-                    }}
+              renderItem={({ item }) => {
+                console.log("ITEM", item);
+                return (
+                  <Pressable
+                    key={genRandonKey()}
+                    onPress={() => onSelect(item.id)}
                   >
-                    <Text
-                      style={[
-                        userPreferencesSize,
-                        { backgroundColor: userPreferences.secondary_color },
-                      ]}
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignContent: "center",
+                        borderBottomWidth: 1,
+                        borderBottomColor: "black",
+                      }}
                     >
-                      <DeleteButton
-                        key={genRandonKey()}
-                        onPress={() => {
-                          setRegistryToDelete(item.id);
-                          setIsDeleteRegistryModalVisible(true);
-                        }}
-                      />
-                    </Text>
-                    <Text
-                      style={[
-                        userPreferencesSize,
-                        { backgroundColor: userPreferences.primary_color },
-                      ]}
-                    >
-                      {item.id}
-                    </Text>
-                    <Text
-                      style={[
-                        userPreferencesSize,
-                        { backgroundColor: userPreferences.secondary_color },
-                      ]}
-                    >
-                      {item.name}
-                      <EditButton
-                        onPress={() => {
-                          setIsUpdateColumnRegistryModalVisible(true);
-                          setUpdateColumn({
-                            id: item.id,
-                            name: "name",
-                            value_text: item.name,
-                          });
-                        }}
-                      />
-                    </Text>
-                    <Text
-                      style={[
-                        userPreferencesSize,
-                        { backgroundColor: userPreferences.primary_color },
-                      ]}
-                    >
-                      {item.price}
-                      <EditButton
-                        onPress={() => {
-                          setIsUpdateColumnRegistryModalVisible(true);
-                          setUpdateColumn({
-                            id: item.id,
-                            name: "price",
-                            value_text: String(item.price),
-                          });
-                        }}
-                      />
-                    </Text>
-                    <Text
-                      style={[
-                        userPreferencesSize,
-                        { backgroundColor: userPreferences.secondary_color },
-                      ]}
-                    >
-                      {item.description}
-                      <EditButton
-                        onPress={() => {
-                          setIsUpdateColumnRegistryModalVisible(true);
-                          setUpdateColumn({
-                            id: item.id,
-                            name: "description",
-                            value_text: item.description,
-                          });
-                        }}
-                      />
-                    </Text>
-                    {item.all_values &&
-                      item.all_values.split(" - ").map((item, i) => {
-                        const customResgistryFormated =
-                          formatCustomRegistry(item);
-                        return (
-                          <View
-                            style={[
-                              { display: "flex", flexDirection: "column" },
-                              i % 2 == 0
-                                ? [
-                                    userPreferencesSize,
-                                    {
-                                      backgroundColor:
-                                        userPreferences.primary_color,
-                                    },
-                                  ]
-                                : [
-                                    userPreferencesSize,
-                                    {
-                                      backgroundColor:
-                                        userPreferences.secondary_color,
-                                    },
-                                  ],
-                            ]}
-                            key={genRandonKey()}
-                          >
-                            {customResgistryFormated.href !== "NULL" ? (
-                              <Button
-                                title={customResgistryFormated.value_text}
-                                onPress={() => {
-                                  Linking.canOpenURL(
-                                    customResgistryFormated.href
-                                  )
-                                    .then((ok) => {
-                                      if (ok)
-                                        Linking.openURL(
-                                          customResgistryFormated.href
-                                        );
-                                    })
-                                    .catch(
-                                      (err) =>
-                                        new Error(
-                                          plataformLanguages.canotOpenLink[
-                                            userLanguage
-                                          ] + err
-                                        )
-                                    );
-                                }}
-                              ></Button>
-                            ) : (
-                              <Text> {customResgistryFormated.value_text}</Text>
-                            )}
+                      <Text
+                        style={[
+                          userPreferencesSize,
+                          { backgroundColor: userPreferences.secondary_color },
+                        ]}
+                      >
+                        <DeleteButton
+                          key={genRandonKey()}
+                          onPress={() => {
+                            setRegistryToDelete(item.id);
+                            setIsDeleteRegistryModalVisible(true);
+                          }}
+                        />
+                      </Text>
+                      <Text
+                        style={[
+                          userPreferencesSize,
+                          { backgroundColor: userPreferences.primary_color },
+                        ]}
+                      >
+                        {item.id}
+                      </Text>
+                      <Text
+                        style={[
+                          userPreferencesSize,
+                          { backgroundColor: userPreferences.secondary_color },
+                        ]}
+                      >
+                        {item.name && item.name !== "" ? item.name : "NULL"}
+                        <EditButton
+                          onPress={() => {
+                            setIsUpdateColumnRegistryModalVisible(true);
+                            setUpdateColumn({
+                              id: item.id,
+                              name: "name",
+                              value_text: item.name,
+                            });
+                          }}
+                        />
+                      </Text>
+                      <Text
+                        style={[
+                          userPreferencesSize,
+                          { backgroundColor: userPreferences.primary_color },
+                        ]}
+                      >
+                        {item.price}
+                        <EditButton
+                          onPress={() => {
+                            setIsUpdateColumnRegistryModalVisible(true);
+                            setUpdateColumn({
+                              id: item.id,
+                              name: "price",
+                              value_text: String(item.price),
+                            });
+                          }}
+                        />
+                      </Text>
+                      <Text
+                        style={[
+                          userPreferencesSize,
+                          { backgroundColor: userPreferences.secondary_color },
+                        ]}
+                      >
+                        {item.description && item.description !== ""
+                          ? item.description
+                          : "NULL"}
+                        <EditButton
+                          onPress={() => {
+                            setIsUpdateColumnRegistryModalVisible(true);
+                            setUpdateColumn({
+                              id: item.id,
+                              name: "description",
+                              value_text: item.description,
+                            });
+                          }}
+                        />
+                      </Text>
+                      {item.all_values &&
+                        item.all_values.split(" - ").map((item, i) => {
+                          const customResgistryFormated =
+                            formatCustomRegistry(item);
+                          return (
                             <View
-                              style={{ display: "flex", flexDirection: "row" }}
+                              style={[
+                                { display: "flex", flexDirection: "column" },
+                                i % 2 == 0
+                                  ? [
+                                      userPreferencesSize,
+                                      {
+                                        backgroundColor:
+                                          userPreferences.primary_color,
+                                      },
+                                    ]
+                                  : [
+                                      userPreferencesSize,
+                                      {
+                                        backgroundColor:
+                                          userPreferences.secondary_color,
+                                      },
+                                    ],
+                              ]}
+                              key={genRandonKey()}
                             >
-                              {formatBoolean(
-                                customResgistryFormated.isActive
-                              ) !== "NULL" && (
-                                <PersonalizableSwitch
-                                  isActive={Number(
-                                    customResgistryFormated.isActive
-                                  )}
-                                  execFunction={(e) => {
-                                    handleToggleIsActive(
+                              {customResgistryFormated.href !== "NULL" ? (
+                                <Button
+                                  title={customResgistryFormated.value_text}
+                                  onPress={() => {
+                                    Linking.canOpenURL(
+                                      customResgistryFormated.href
+                                    )
+                                      .then((ok) => {
+                                        if (ok)
+                                          Linking.openURL(
+                                            customResgistryFormated.href
+                                          );
+                                      })
+                                      .catch(
+                                        (err) =>
+                                          new Error(
+                                            plataformLanguages.canotOpenLink[
+                                              userLanguage
+                                            ] + err
+                                          )
+                                      );
+                                  }}
+                                ></Button>
+                              ) : (
+                                <Text>
+                                  {" "}
+                                  {customResgistryFormated.value_text}
+                                </Text>
+                              )}
+                              <View
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                }}
+                              >
+                                {formatBoolean(
+                                  customResgistryFormated.isActive
+                                ) !== "NULL" && (
+                                  <PersonalizableSwitch
+                                    isActive={Number(
+                                      customResgistryFormated.isActive
+                                    )}
+                                    execFunction={(e) => {
+                                      handleToggleIsActive(
+                                        Number(customResgistryFormated.id)
+                                      );
+                                    }}
+                                  />
+                                )}
+                                <EditButton
+                                  onPress={() => {
+                                    setIsUpdateColumnRegistryModalVisible(true);
+                                    setCustomRegistryId(
                                       Number(customResgistryFormated.id)
                                     );
                                   }}
                                 />
-                              )}
-                              <EditButton
-                                onPress={() => {
-                                  setIsUpdateColumnRegistryModalVisible(true);
-                                  setCustomRegistryId(
-                                    Number(customResgistryFormated.id)
-                                  );
-                                }}
-                              />
+                              </View>
                             </View>
-                          </View>
-                        );
-                      })}
-                  </View>
-                </Pressable>
-              )}
+                          );
+                        })}
+                    </View>
+                  </Pressable>
+                );
+              }}
             />
 
             {content?.header.id && (
